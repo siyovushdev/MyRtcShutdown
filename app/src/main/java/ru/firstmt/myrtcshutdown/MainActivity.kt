@@ -16,6 +16,9 @@ import ru.firstmt.myrtcshutdown.utils.Utils
 import ru.firstmt.myrtcshutdown.utils.Utils.cancelOnTime
 import ru.firstmt.myrtcshutdown.utils.Utils.setOnTime
 import ru.firstmt.myrtcshutdown.view.ItemView
+import java.io.DataInputStream
+import java.io.DataOutputStream
+import java.io.IOException
 import java.util.*
 
 class MainActivity : Activity(), View.OnClickListener, CompoundButton.OnCheckedChangeListener {
@@ -49,10 +52,85 @@ class MainActivity : Activity(), View.OnClickListener, CompoundButton.OnCheckedC
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        Log.d("TIMER_SWITCH", execRootCmd("date"))
+        Log.d("TIMER_SWITCH", execRootCmd("cat /system/build.prop"))
         initview()
         getData() //显示上回保存的数据
         initevent()
         setAlarm()
+    }
+
+    private fun execRootCmd(cmd: String): String {
+        var result = ""
+        val dos: DataOutputStream? = null
+        val dis: DataInputStream? = null
+        try {
+            val p = Runtime.getRuntime().exec("su")
+            val dos2 = DataOutputStream(p.outputStream)
+            val dis2 = DataInputStream(p.inputStream)
+            dos2.writeBytes(
+                """
+                $cmd
+
+                """.trimIndent()
+            )
+            dos2.flush()
+            dos2.writeBytes("exit\n")
+            dos2.flush()
+            while (true) {
+                val readLine = dis2.readLine() ?: break
+                Log.d(TAG, "shell result = $readLine")
+                result += readLine
+            }
+            p.waitFor()
+            try {
+                dos2.close()
+            } catch (e: IOException) {
+                Log.e(TAG, "catch (e: Exception): ", e)
+                e.printStackTrace()
+            }
+            try {
+                dis2.close()
+            } catch (e2: IOException) {
+                Log.e(TAG, "catch (e2: Exception): ", e2)
+                e2.printStackTrace()
+            }
+        } catch (e3: Exception) {
+            Log.e(TAG, "catch (e3: Exception): ", e3)
+            e3.printStackTrace()
+            if (dos != null) {
+                try {
+                    dos.close()
+                } catch (e4: IOException) {
+                    e4.printStackTrace()
+                }
+            }
+            if (dis != null) {
+                try {
+                    dis.close()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }
+        } catch (th: Throwable) {
+            Log.e(TAG, "catch (th: Throwable): ", th)
+            if (dos != null) {
+                try {
+                    dos.close()
+                } catch (e5: IOException) {
+                    e5.printStackTrace()
+                }
+            }
+            if (dis != null) {
+                try {
+                    dis.close()
+                } catch (e6: IOException) {
+                    e6.printStackTrace()
+                }
+            }
+            throw th
+        }
+        return result
     }
 
     private fun initview() {
