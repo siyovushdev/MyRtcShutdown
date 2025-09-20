@@ -3,13 +3,14 @@ package ru.firstmt.myrtcshutdown
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import ru.firstmt.myrtcshutdown.helper.L
+import ru.firstmt.myrtcshutdown.helper.Scheduler
 
 class BootCompletedReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
-            val intent1 = Intent(context, BootActivity::class.java)
-            intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            context.startActivity(intent1)
+        L.i(L.T_BOOT, "BOOT_COMPLETED received, rescheduling all")
+        if (Intent.ACTION_BOOT_COMPLETED == intent.action) {
+            Scheduler(context).rescheduleAll()
         }
     }
 }

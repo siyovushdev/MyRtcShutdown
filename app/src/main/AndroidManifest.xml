@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:sharedUserId="android.uid.system">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <uses-permission android:name="android.permission.REBOOT" />
-    <uses-permission android:name="android.permission.DEVICE_POWER" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.SHUTDOWN" />
+    <!-- Для targetSdk 33+ (на Android 11 это просто игнорируется, но декларировать стоит) -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@drawable/app_icon"
         android:label="@string/app_name"
@@ -20,23 +18,40 @@
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity
-            android:name=".BootActivity"
-            android:exported="true"
-            android:theme="@android:style/Theme.NoDisplay" />
+
 
         <receiver
             android:name=".BootCompletedReceiver"
-            android:exported="true">
+            android:exported="true"
+            android:enabled="true"
+            android:directBootAware="true">
             <intent-filter android:priority="1000">
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
-        <receiver android:name=".AlarmReceiver" />
+
+        <!-- Аларам для выключения -->
+        <receiver
+            android:name=".AlarmReceiver"
+            android:enabled="true"
+            android:exported="false"/>
+
+        <!-- Удалённые команды: защищаем signature-permission'ом -->
+        <receiver
+            android:name=".RemoteScheduleReceiver"
+            android:enabled="true"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="ru.firstmt.myrtcshutdown.INIT"/>
+                <action android:name="ru.firstmt.myrtcshutdown.SET_SCHEDULE"/>
+                <action android:name="ru.firstmt.myrtcshutdown.TEST_CYCLE"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
