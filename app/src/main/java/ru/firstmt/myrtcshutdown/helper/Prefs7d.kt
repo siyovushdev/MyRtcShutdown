@@ -13,6 +13,7 @@ class Prefs7d(ctx: Context) {
         p.getInt("off_${day.name}_minute", 0)
     )
     fun setOff(day: WeekDay, plan: DayPlan) {
+        L.d("Prefs7d", "setOff: day: $day and plan: $plan")
         p.edit()
             .putBoolean("off_${day.name}_enabled", plan.enabled)
             .putInt("off_${day.name}_hour", plan.hour)
@@ -28,6 +29,7 @@ class Prefs7d(ctx: Context) {
         p.getInt("on_${day.name}_minute", 30)
     )
     fun setOn(day: WeekDay, plan: DayPlan) {
+        L.d("Prefs7d", "setOn: day: $day and plan: $plan")
         p.edit()
             .putBoolean("on_${day.name}_enabled", plan.enabled)
             .putInt("on_${day.name}_hour", plan.hour)

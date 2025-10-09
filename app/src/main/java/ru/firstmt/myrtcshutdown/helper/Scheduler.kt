@@ -20,7 +20,8 @@ class Scheduler(private val ctx: Context) {
         WeekDay.all.forEachIndexed { index, wd ->
             val plan = prefs.getOff(wd)
             if (plan.enabled) {
-                val millis = nextWeeklyWallClockMillis(wd.toJavaDay(), plan.hour, plan.minute)
+//                val millis = nextWeeklyWallClockMillis(wd.toJavaDay(), plan.hour, plan.minute)
+                val millis = nextWeeklyWallClockMillis(wd.toJavaDay(), plan.hour, plan.minute, ZoneId.systemDefault(), minLeadSeconds = 90L)
                 L.i(L.T_SCH, "OFF[$wd]: enabled, schedule at ${L.ts(millis)} (req=${REQ_SHUTDOWN_BASE + index})")
                 scheduleShutdownAtForDay(millis, index)
             } else {
@@ -30,13 +31,15 @@ class Scheduler(private val ctx: Context) {
 
         // ON (RTC): только ближайший
         val now = System.currentTimeMillis()
+        val leadMs = 90_000L
         var bestEpoch: Long? = null
         WeekDay.all.forEach { wd ->
             val plan = prefs.getOn(wd)
             if (plan.enabled) {
-                val epoch = nextWeeklyEpochUtc(wd.toJavaDay(), plan.hour, plan.minute)
+//                val epoch = nextWeeklyEpochUtc(wd.toJavaDay(), plan.hour, plan.minute)
+                val epoch = nextWeeklyEpochUtc(wd.toJavaDay(), plan.hour, plan.minute, ZoneId.systemDefault(), minLeadSeconds = 90L)
                 L.d(L.T_SCH, "ON[$wd]: candidate ${L.epoch(epoch)}")
-                if (epoch * 1000 > now && (bestEpoch == null || epoch < bestEpoch!!)) {
+                if (epoch * 1000 >= now + leadMs && (bestEpoch == null || epoch < bestEpoch!!)) {
                     bestEpoch = epoch
                 }
             }

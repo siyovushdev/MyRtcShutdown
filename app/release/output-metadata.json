@@ -11,9 +11,9 @@
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 2,
-      "versionName": "2.0",
-      "outputFile": "AdbusTimerSwitch2-release.apk"
+      "versionCode": 7,
+      "versionName": "7.0",
+      "outputFile": "AdbusTimerSwitch_v7.0-release.apk"
     }
   ],
   "elementType": "File"

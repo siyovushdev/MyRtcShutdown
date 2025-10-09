@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <!-- Статус-строка (по желанию можно убрать) -->
+    <!-- Статус-строка: текущее время/дата/таймзона -->
+    <LinearLayout
+        android:id="@+id/status_strip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:background="#202124"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <TextClock
+            android:id="@+id/clock_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:format24Hour="HH:mm"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:importantForAccessibility="yes" />
+
+        <TextView
+            android:id="@+id/clock_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="—"
+            android:textSize="18sp"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/clock_tz"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:text="—"
+            android:textSize="16sp"
+            android:textColor="#B0BEC5" />
+    </LinearLayout>
+
+    <!-- Центральная зона без боковых Space -->
+    <LinearLayout
+        android:id="@+id/center_area"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingStart="@dimen/screen_padding_h"
+        android:paddingEnd="@dimen/screen_padding_h"
+        android:paddingTop="@dimen/screen_padding_v"
+        android:paddingBottom="@dimen/screen_padding_v"
+        android:gravity="center">
+
+        <!-- Ограничитель максимальной ширины для больших экранов -->
+        <LinearLayout
+            android:id="@+id/columns_container"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:maxWidth="@dimen/columns_max_width">
+
+            <!-- Левая колонка -->
+            <LinearLayout
+                android:id="@+id/col_off"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="@dimen/column_padding">
+
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Shutdown (OFF)"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Общее время выключения (для всех дней)"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="4dp"/>
+
+                <include layout="@layout/item_day" android:id="@+id/off_all"/>
+
+                <!-- 7 строк дней — используйте ваш item_day -->
+                <include layout="@layout/item_day" android:id="@+id/off_mon"/>
+                <include layout="@layout/item_day" android:id="@+id/off_tue"/>
+                <include layout="@layout/item_day" android:id="@+id/off_wed"/>
+                <include layout="@layout/item_day" android:id="@+id/off_thu"/>
+                <include layout="@layout/item_day" android:id="@+id/off_fri"/>
+                <include layout="@layout/item_day" android:id="@+id/off_sat"/>
+                <include layout="@layout/item_day" android:id="@+id/off_sun"/>
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="@dimen/columns_gap"
+                android:layout_height="match_parent" />
+
+            <!-- Правая колонка -->
+            <LinearLayout
+                android:id="@+id/col_on"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="@dimen/column_padding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Power On (ON)"
+                    android:textSize="22sp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Общее время включения (для всех дней)"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="4dp"/>
+
+                <include layout="@layout/item_day" android:id="@+id/on_all"/>
+
+
+                <include layout="@layout/item_day" android:id="@+id/on_mon"/>
+                <include layout="@layout/item_day" android:id="@+id/on_tue"/>
+                <include layout="@layout/item_day" android:id="@+id/on_wed"/>
+                <include layout="@layout/item_day" android:id="@+id/on_thu"/>
+                <include layout="@layout/item_day" android:id="@+id/on_fri"/>
+                <include layout="@layout/item_day" android:id="@+id/on_sat"/>
+                <include layout="@layout/item_day" android:id="@+id/on_sun"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Правая пустая зона (большой отступ) -->
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2" />
+    </LinearLayout>
+
+    <!-- Низ: кнопки действия (по желанию) -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btn_reschedule"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="Применить расписание" />
+
+    </LinearLayout>
+</LinearLayout>

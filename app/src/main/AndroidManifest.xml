@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ShutDownPhone">
+        android:theme="@style/Theme.MyRtcShutdown">
 
         <activity
             android:name=".MainActivity"
@@ -48,6 +48,8 @@
             android:exported="true" >
             <intent-filter>
                 <action android:name="ru.firstmt.myrtcshutdown.INIT"/>
+                <action android:name="ru.firstmt.myrtcshutdown.SCHEDULE_CHANGED"/>
+                <action android:name="ru.firstmt.myrtcshutdown.SET_SCHEDULE_ALL"/>
                 <action android:name="ru.firstmt.myrtcshutdown.SET_SCHEDULE"/>
                 <action android:name="ru.firstmt.myrtcshutdown.TEST_CYCLE"/>
             </intent-filter>

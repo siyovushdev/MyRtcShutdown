@@ -1,6 +1,8 @@
 package ru.firstmt.myrtcshutdown.helper
 
 object RemoteProtocol {
+    const val ACTION_SCHEDULE_CHANGED = "ru.firstmt.myrtcshutdown.SCHEDULE_CHANGED"
+    const val ACTION_SET_SCHEDULE_ALL = "ru.firstmt.myrtcshutdown.SET_SCHEDULE_ALL"
     const val ACTION_SET_SCHEDULE = "ru.firstmt.myrtcshutdown.SET_SCHEDULE"
     const val ACTION_TEST_CYCLE   = "ru.firstmt.myrtcshutdown.TEST_CYCLE"
     const val ACTION_RESULT       = "ru.firstmt.myrtcshutdown.SCHEDULE_RESULT"

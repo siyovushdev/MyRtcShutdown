@@ -1,30 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp"
-    android:gravity="center_vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
 
-    <CheckBox
-        android:id="@+id/chk_enabled"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <TextView
-        android:id="@+id/txt_day"
-        android:layout_marginStart="12dp"
-        android:layout_width="0dp"
-        android:layout_weight="1"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Понедельник"/>
+        android:gravity="start"
+        android:layout_gravity="start"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp">
 
-    <TextView
-        android:id="@+id/txt_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="07:30"
-        android:padding="8dp"
-        android:background="#22000000"/>
+        <CheckBox
+            android:id="@+id/chk_enabled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:buttonTint="#26A69A" />  <!-- бирюзовая галка, хорошо видна -->
+
+        <TextView
+            android:id="@+id/txt_day"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="12dp"
+            android:text="Понедельник"
+            android:textSize="@dimen/day_text_size"
+            android:textStyle="bold"
+            android:textColor="#212121"/>
+
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/txt_time"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="@dimen/time_button_min_width"
+            android:text="23:00"
+            android:textAllCaps="false"
+            android:textSize="@dimen/time_button_text_size"
+            android:textColor="@color/btn_time_text"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/btn_time_stroke"
+            app:iconPadding="0dp"
+            app:cornerRadius="10dp"
+            app:backgroundTint="@color/btn_time_bg"/>
+
+    </LinearLayout>
+
+
+
 </LinearLayout>

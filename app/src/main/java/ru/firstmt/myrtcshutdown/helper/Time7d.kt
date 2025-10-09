@@ -5,16 +5,38 @@ import java.time.temporal.TemporalAdjusters
 import java.util.*
 
 /** Следующее наступление H:M для заданного dayOfWeek (Java Time) → millis (локальные часы) */
-fun nextWeeklyWallClockMillis(day: DayOfWeek, hour: Int, minute: Int, zone: ZoneId = ZoneId.systemDefault()): Long {
+fun nextWeeklyWallClockMillis(
+    day: DayOfWeek,
+    hour: Int,
+    minute: Int,
+    zone: ZoneId = ZoneId.systemDefault(),
+    minLeadSeconds: Long = 90L // буфер на дрейф/задержку
+): Long {
     val now = ZonedDateTime.now(zone)
-    var next = now.with(TemporalAdjusters.nextOrSame(day)).withHour(hour).withMinute(minute).withSecond(0).withNano(0)
-    if (!next.isAfter(now)) next = next.plusWeeks(1)
+    var next = now.with(TemporalAdjusters.nextOrSame(day))
+        .withHour(hour).withMinute(minute).withSecond(0).withNano(0)
+
+    // Порог с буфером — если «цель» не строго ПОСЛЕ него, уходим на следующую неделю
+    val threshold = now.plusSeconds(minLeadSeconds)
+    if (!next.isAfter(threshold)) {
+        next = next.plusWeeks(1)
+    }
+
+    // Диагностика
+    L.i(L.T_SCH, "nextWeekly calc: now=$now threshold=$threshold target=$next zone=$zone")
+
     return next.toInstant().toEpochMilli()
 }
 
 /** Следующее наступление H:M для заданного dayOfWeek → UTC epoch seconds (для RTC wakealarm) */
-fun nextWeeklyEpochUtc(day: DayOfWeek, hour: Int, minute: Int, zone: ZoneId = ZoneId.systemDefault()): Long {
-    val millis = nextWeeklyWallClockMillis(day, hour, minute, zone)
+fun nextWeeklyEpochUtc(
+    day: DayOfWeek,
+    hour: Int,
+    minute: Int,
+    zone: ZoneId = ZoneId.systemDefault(),
+    minLeadSeconds: Long = 90L
+): Long {
+    val millis = nextWeeklyWallClockMillis(day, hour, minute, zone, minLeadSeconds)
     return millis / 1000
 }
 
